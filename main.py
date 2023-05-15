@@ -43,7 +43,7 @@ def main():
         print(f"Image saved as {filename}")
         all_images_generate.append(filename)
 
-    if continue_or_not("Upscale output? (Might take a tiny bit longer to process...)"):
+    if continue_or_not("Upscale output? (Might take a tiny bit longer to process...)(y/n)"):
         image_list = []
         for file in all_images_generate:
             with open(("./output/" + file), 'rb') as f:
@@ -77,10 +77,12 @@ def main():
             pnginfo = PngImagePlugin.PngInfo()
             pnginfo.add_text("parameters", response2.json().get("info"))
             # random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+            os.remove(os.path.join(output_dir, f"{image_name}.png"))
             filename = f"{image_name}_upscaled.png"
             final_save_location = os.path.join(output_dir, filename)
             image.save(final_save_location, pnginfo=pnginfo)
-
+        path = os.path.realpath(output_dir)
+        os.startfile(path)
     path = os.path.realpath(output_dir)
     os.startfile(path)
 
@@ -136,7 +138,7 @@ def user_initial_selection():
             "cfg_scale": 7,
             "width": 512,
             "height": 768,
-            "restore_faces": true,
+            "restore_faces": false,
             "tiling": false,
             "do_not_save_samples": true,
             "do_not_save_grid": true,
